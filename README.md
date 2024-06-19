@@ -7,7 +7,7 @@ This project is a solution to the Ramp coding challenge. It fetches a flag from 
 
 ### Prerequisites
 
-- Node.js (version 14 or higher recommended)\
+- Node.js (version 14 or higher recommended)
 - npm (comes with Node.js)
 
 ### Installation
@@ -34,21 +34,21 @@ This project is a solution to the Ramp coding challenge. It fetches a flag from 
 
 ### Project Structure
 
-- `src/App.js`: Main component that fetches the flag and passes it to `TypewriterEffect`.\
+- `src/App.js`: Main component that fetches the flag and passes it to `TypewriterEffect`.
 - `TypewriterEffect`: Component that displays the flag with a typewriter effect.
 
 ### Components
 
 #### `App`
 
-- Fetches the flag from the provided URL.\
-- Manages loading state.\
+- Fetches the flag from the provided URL.
+- Manages loading state.
 - Passes the flag to `TypewriterEffect` for display.
 
 #### `TypewriterEffect`
 
-- Receives the flag as a prop.\
-- Displays the flag one character at a time with a half-second delay.\
+- Receives the flag as a prop.
+- Displays the flag one character at a time with a half-second delay.
 - Uses `setInterval` to update the displayed text.
 
 ### Example Code
