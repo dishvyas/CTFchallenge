@@ -13,21 +13,21 @@ This project is a solution to the Ramp coding challenge. It fetches a flag from 
 ### Installation
 
 1\. Clone the repository:\
-   ```bash\
-   git clone <repository-url>\
-   cd ramp-challenge\
+   ```
+   git clone <repository-url>
+   cd ramp-challenge
    ```
 
 2\. Install the dependencies:\
-   ```bash\
-   npm install\
+   ```
+   npm install
    ```
 
 ### Running the Application
 
 1\. Start the development server:\
-   ```bash\
-   npm start\
+   ```
+   npm start
    ```
 
 2\. Open your browser and navigate to `http://localhost:3000`.
@@ -58,69 +58,69 @@ Here is the main code used in this project:
 ```jsx\
 import React, { useEffect, useState } from 'react';
 
-const TypewriterEffect = ({ text }) => {\
+const TypewriterEffect = ({ text }) => {
   const [displayedText, setDisplayedText] = useState('');
 
-  useEffect(() => {\
+  useEffect(() => {
     console.log('TypewriterEffect received text:', text); // Debugging: Log the received text\
     let currentIndex = 0;
 
-    const intervalId = setInterval(() => {\
-      if (currentIndex < text.length) {\
-        const nextChar = text[currentIndex];\
+    const intervalId = setInterval(() => {
+      if (currentIndex < text.length) {
+        const nextChar = text[currentIndex];
         console.log('Adding character:', nextChar); // Debugging: Log the next character\
-        setDisplayedText((prev) => prev + nextChar);\
-        currentIndex++;\
-      } else {\
-        clearInterval(intervalId);\
-      }\
+        setDisplayedText((prev) => prev + nextChar);
+        currentIndex++;
+      } else {
+        clearInterval(intervalId);
+      }
     }, 500);
 
-    return () => clearInterval(intervalId);\
+    return () => clearInterval(intervalId);
   }, [text]);
 
-  return (\
-    <ul>\
-      {displayedText.split('').map((char, index) => (\
-        <li key={index}>{char}</li>\
-      ))}\
-    </ul>\
-  );\
+  return (
+    <ul>
+      {displayedText.split('').map((char, index) => (
+        <li key={index}>{char}</li>
+      ))}
+    </ul>
+  );
 };
 
-const App = () => {\
-  const [flag, setFlag] = useState('');\
+const App = () => {
+  const [flag, setFlag] = useState('');
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {\
-    const fetchFlag = async () => {\
-      try {\
-        const response = await fetch('https://wgg522pwivhvi5gqsn675gth3q0otdja.lambda-url.us-east-1.on.aws/646973');\
-        const result = await response.text();\
-        console.log('Fetched flag:', result); // Debugging: Log the fetched flag\
-        setFlag(result.trim()); // Trim any extra whitespaces\
-      } catch (error) {\
-        console.error('Error fetching the flag:', error);\
-      } finally {\
-        setLoading(false);\
+  useEffect(() => {
+    const fetchFlag = async () => {
+      try {
+        const response = await fetch('https://wgg522pwivhvi5gqsn675gth3q0otdja.lambda-url.us-east-1.on.aws/646973');
+        const result = await response.text();
+        console.log('Fetched flag:', result); // Debugging: Log the fetched flag
+        setFlag(result.trim()); // Trim any extra whitespaces
+      } catch (error) {
+        console.error('Error fetching the flag:', error);
+      } finally {
+        setLoading(false);
       }\
     };
 
-    fetchFlag();\
+    fetchFlag();
   }, []);
 
-  return (\
-    <div>\
-      {loading ? (\
-        <p>Loading...</p>\
-      ) : (\
-        <TypewriterEffect text={flag} />\
-      )}\
-    </div>\
-  );\
+  return (
+    <div>
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        <TypewriterEffect text={flag} />
+      )}
+    </div>
+  );
 };
 
-export default App;\
+export default App;
 ```
 
 ### License
