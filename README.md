@@ -1,70 +1,130 @@
-# Getting Started with Create React App
+---
+# Ramp Challenge Solution
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is a solution to the Ramp coding challenge. It fetches a flag from a given URL and displays it with a typewriter effect using React.
 
-## Available Scripts
+## Getting Started
 
-In the project directory, you can run:
+### Prerequisites
 
-### `npm start`
+- Node.js (version 14 or higher recommended)\
+- npm (comes with Node.js)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Installation
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+1\. Clone the repository:\
+   ```bash\
+   git clone <repository-url>\
+   cd ramp-challenge\
+   ```
 
-### `npm test`
+2\. Install the dependencies:\
+   ```bash\
+   npm install\
+   ```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Running the Application
 
-### `npm run build`
+1\. Start the development server:\
+   ```bash\
+   npm start\
+   ```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+2\. Open your browser and navigate to `http://localhost:3000`.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Project Structure
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- `src/App.js`: Main component that fetches the flag and passes it to `TypewriterEffect`.\
+- `TypewriterEffect`: Component that displays the flag with a typewriter effect.
 
-### `npm run eject`
+### Components
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+#### `App`
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- Fetches the flag from the provided URL.\
+- Manages loading state.\
+- Passes the flag to `TypewriterEffect` for display.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+#### `TypewriterEffect`
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- Receives the flag as a prop.\
+- Displays the flag one character at a time with a half-second delay.\
+- Uses `setInterval` to update the displayed text.
 
-## Learn More
+### Example Code
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Here is the main code used in this project:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```jsx\
+import React, { useEffect, useState } from 'react';
 
-### Code Splitting
+const TypewriterEffect = ({ text }) => {\
+  const [displayedText, setDisplayedText] = useState('');
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+  useEffect(() => {\
+    console.log('TypewriterEffect received text:', text); // Debugging: Log the received text\
+    let currentIndex = 0;
 
-### Analyzing the Bundle Size
+    const intervalId = setInterval(() => {\
+      if (currentIndex < text.length) {\
+        const nextChar = text[currentIndex];\
+        console.log('Adding character:', nextChar); // Debugging: Log the next character\
+        setDisplayedText((prev) => prev + nextChar);\
+        currentIndex++;\
+      } else {\
+        clearInterval(intervalId);\
+      }\
+    }, 500);
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+    return () => clearInterval(intervalId);\
+  }, [text]);
 
-### Making a Progressive Web App
+  return (\
+    <ul>\
+      {displayedText.split('').map((char, index) => (\
+        <li key={index}>{char}</li>\
+      ))}\
+    </ul>\
+  );\
+};
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+const App = () => {\
+  const [flag, setFlag] = useState('');\
+  const [loading, setLoading] = useState(true);
 
-### Advanced Configuration
+  useEffect(() => {\
+    const fetchFlag = async () => {\
+      try {\
+        const response = await fetch('https://wgg522pwivhvi5gqsn675gth3q0otdja.lambda-url.us-east-1.on.aws/646973');\
+        const result = await response.text();\
+        console.log('Fetched flag:', result); // Debugging: Log the fetched flag\
+        setFlag(result.trim()); // Trim any extra whitespaces\
+      } catch (error) {\
+        console.error('Error fetching the flag:', error);\
+      } finally {\
+        setLoading(false);\
+      }\
+    };
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+    fetchFlag();\
+  }, []);
 
-### Deployment
+  return (\
+    <div>\
+      {loading ? (\
+        <p>Loading...</p>\
+      ) : (\
+        <TypewriterEffect text={flag} />\
+      )}\
+    </div>\
+  );\
+};
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+export default App;\
+```
 
-### `npm run build` fails to minify
+### License
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This project is licensed under the MIT License.
+
+---
